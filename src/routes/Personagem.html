@@ -1,0 +1,77 @@
+{#await personagem}
+  <p>Buscando Dados</p>
+{:then personagem}
+  <div class="content">
+    <Collection title={personagem.nome}>
+      <Row leftLabel="Altura:" rightLabel={personagem.altura}cm/>
+      {#if personagem.peso != "unknown"}
+        <Row leftLabel="Peso:" rightLabel={personagem.peso}kg/>
+      {/if}
+      {#if personagem.cabelo != "none"}
+        <Row leftLabel="Cabelo:" rightLabel={personagem.cabelo}/>
+      {/if}
+      <Row leftLabel="Pele:" rightLabel={personagem.pele}/>
+      <Row leftLabel="Cor do Olho:" rightLabel={personagem.olho}/>
+      {#if personagem.nascimento != "unknown"}
+        <Row leftLabel="Ano de Nascimento:" rightLabel={personagem.nascimento}/>
+      {/if}
+      <Row leftLabel="Gênero:" rightLabel={personagem.genero}/>
+    </Collection>
+
+    <Button
+    size="full"
+    bottom
+    on:click="refs.printable.print()"
+    shortcut="enter"
+    >
+    Imprimir
+    </Button>
+
+    <Printable ref:printable>
+      <p>{personagem.nome}</p>
+      <p>Altura: {personagem.altura}cm</p>
+      {#if personagem.peso != "unknown"}
+        <p>Peso: {personagem.peso}kg</p>
+      {/if}
+      {#if personagem.cabelo != "none"}
+        <p>Cabelo: {personagem.cabelo}</p>
+      {/if}
+        <p>Pele: {personagem.pele}</p>
+        <p>Cor do Olho: {personagem.olho}</p>
+      {#if personagem.nascimento != "unknown"}
+        <p>Ano de Nascimento: {personagem.nascimento}</p>
+      {/if}
+      <p>Gênero: {personagem.genero}</p>
+      <p>Buscado em {getStringData(personagem.horaDaBusca)}</p>
+    </Printable>
+  </div>
+{:catch error}
+  <p>Estes não são os droids que você procura</p>
+{/await}
+
+
+<script>
+  import { getStringData } from '../utils/Funcoes.js';
+
+  export default {
+    components: {
+      Collection: '@mamba/collection',
+      Row: '@mamba/collection/row',
+      Button: '@mamba/button',
+      Printable: '@mamba/printable',
+    },
+    data() {
+      return {
+        getStringData,
+      };
+    },
+  };
+</script>
+
+<style type="text/postcss">
+  .content {
+    padding: 5px;
+    padding-bottom: calc(34px);
+    font-size: 22px;
+  }
+</style>

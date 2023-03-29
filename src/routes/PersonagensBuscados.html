@@ -1,0 +1,65 @@
+<AppBarModifier title="Personagem" />
+
+<div class="content">
+  {#if personagemSelecionado == null}
+    <Collection title="Personagens Buscados">
+      {#if personagensBuscados != null}
+        {#each personagensBuscados as personagem}
+          <Row leftLabel={personagem.nome} description={getStringData(personagem.horaDaBusca)} on:click="set({personagemSelecionado: personagem})"/>
+        {:else}
+        <Row leftLabel="Nenhum personagem Buscado"/>
+        {/each}
+      {:else}
+      <p>Nenhum personagem buscado</p>
+      <Button
+          size="fill"
+          on:click="redirect('/personagem')"
+        >
+          Buscar Personagem Aleatório
+      </Button>
+      {/if}
+    </Collection>
+  {:else}
+    <PersonagemComponent personagem="{personagemSelecionado}"/>
+  {/if}
+</div>
+
+<script>
+  import Storage from '@mamba/pos/api/storage.js';
+  import { getStringData } from '../utils/Funcoes.js';
+
+  const personagensBuscados = Storage.getItem('personagensBuscados');
+  let personagemSelecionado;
+  export default {
+    components: {
+      AppBarModifier: '@mamba/appbar/Modifier.html',
+      Collection: '@mamba/collection',
+      Row: '@mamba/collection/row',
+      Button: '@mamba/button',
+      PersonagemComponent: './Personagem.html',
+    },
+    data() {
+      return {
+        personagensBuscados,
+        getStringData,
+        personagemSelecionado,
+      };
+    },
+    methods: {
+      redirect(rota) {
+        this.root.router.go(rota);
+      },
+      mostraPersonagem(personagem) {
+        console.log(personagem);
+        personagemSelecionado = personagem;
+      },
+    },
+  };
+</script>
+
+<style type="text/postcss">
+  .content {
+    padding: 5px;
+    font-size: 22px;
+  }
+</style>

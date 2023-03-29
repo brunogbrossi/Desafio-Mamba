@@ -1,0 +1,39 @@
+<AppBarModifier title="Inicio" />
+
+<div class="content">
+  <Button
+    size="fill"
+    on:click="redirect('/personagem')"
+  >
+    Buscar Personagem Aleatório
+  </Button>
+  <Button
+    size="fill"
+    on:click="redirect('/buscados')"
+  >
+    Mostrar Personagens Já Buscados
+  </Button>
+</div>
+
+<script>
+  export default {
+    components: {
+      AppBarModifier: '@mamba/appbar/Modifier.html',
+      Button: '@mamba/button',
+    },
+    methods: {
+      redirect(rota) {
+        this.root.router.go(rota);
+      },
+    },
+  };
+</script>
+
+<style type="text/postcss">
+  .content {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+</style>

@@ -1,38 +1,28 @@
 <AppBarModifier title="Home" />
 
 <p>
-  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-  <br>
-  <br>
-  <a href="/about">About</a>
+  Clique em Iniciar para buscar um personagem aleatório ou ver os personagens já buscados, e se necessário imprima os dados do personagem
 </p>
-
-<Printable ref:printable>
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga unde dicta at quisquam doloremque sunt soluta architecto debitis, sit quidem placeat qui nam expedita quod, mollitia suscipit porro saepe recusandae.
-</Printable>
 
 <Button
   size="full"
   bottom
-  on:click="refs.dialog.open(2000)"
+  on:click="redirectIniciar()"
   shortcut="enter"
 >
-  Imprimir! (press. enter)
+  Iniciar
 </Button>
-
-<Dialog ref:dialog fullscreen>
-  <LoadingSprite />
-  <h1>Carregando...</h1>
-</Dialog>
 
 <script>
   export default {
     components: {
       AppBarModifier: '@mamba/appbar/Modifier.html',
-      Printable: '@mamba/printable',
       Button: '@mamba/button',
-      Dialog: '@mamba/dialog',
-      LoadingSprite: '@mamba/sprite/Loading.html',
+    },
+    methods: {
+      redirectIniciar() {
+        this.root.router.go('/opcoes');
+      },
     },
   };
 </script>
