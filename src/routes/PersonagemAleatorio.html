@@ -13,67 +13,12 @@
 {/if}
 
 <script>
-  import Http from '@mamba/pos/api/http.js';
   import Storage from '@mamba/pos/api/storage.js';
+  import { getPersonagem } from '../utils/Funcoes.js';
 
-  let personagensBuscados = Storage.getItem('personagensBuscados');
+  const personagensBuscados = Storage.getItem('personagensBuscados');
   const isTodosOsPersonagensBuscados =
     personagensBuscados != null && personagensBuscados.length === 82;
-  const getRandomNumber = () => {
-    return Math.floor(Math.random() * 82 + 1);
-  };
-  function retornaNumeroAleatorioValido() {
-    if (isTodosOsPersonagensBuscados) {
-      return null;
-    }
-    const numeroAleatorio = getRandomNumber();
-    const personagemExiste =
-      personagensBuscados &&
-      personagensBuscados.find((personagem) => {
-        return personagem.id === numeroAleatorio;
-      });
-    if (personagemExiste) {
-      return retornaNumeroAleatorioValido();
-    }
-    return numeroAleatorio;
-  }
-  async function getPersonagem() {
-    const randomNumber = retornaNumeroAleatorioValido();
-    let personagem = {};
-    if (randomNumber === null) return;
-    const request = {
-      url: `https://swapi.dev/api/people/${randomNumber}`,
-    };
-    return Http.send(request)
-      .then((result) => {
-        const response = JSON.parse(result.body);
-        personagem = {
-          id: randomNumber,
-          nome: response.name,
-          altura: response.height,
-          peso: response.mass,
-          cabelo: response.hair_color,
-          pele: response.skin_color,
-          olho: response.eye_color,
-          nascimento: response.birth_year,
-          genero: response.gender,
-          horaDaBusca: new Date(),
-        };
-
-        if (personagensBuscados === null) {
-          personagensBuscados = [personagem];
-        } else {
-          personagensBuscados.push(personagem);
-        }
-        Storage.setItem('personagensBuscados', personagensBuscados);
-        return personagem;
-        // Storage.clear();
-      })
-      .catch((error) => {
-        console.log(error.status);
-        console.log(error.msg);
-      });
-  }
 
   export default {
     components: {
@@ -82,12 +27,9 @@
     },
     data() {
       return {
-        personagem: getPersonagem(),
+        personagem: getPersonagem(personagensBuscados),
         isTodosOsPersonagensBuscados,
       };
-    },
-    methods: {
-      retornaNumeroAleatorioValido,
     },
   };
 </script>

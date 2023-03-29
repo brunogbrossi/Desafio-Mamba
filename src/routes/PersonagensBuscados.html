@@ -28,7 +28,6 @@
   import Storage from '@mamba/pos/api/storage.js';
   import { getStringData } from '../utils/Funcoes.js';
 
-  const personagensBuscados = Storage.getItem('personagensBuscados');
   let personagemSelecionado;
   export default {
     components: {
@@ -40,7 +39,7 @@
     },
     data() {
       return {
-        personagensBuscados,
+        personagensBuscados: Storage.getItem('personagensBuscados'),
         getStringData,
         personagemSelecionado,
       };
@@ -50,7 +49,6 @@
         this.root.router.go(rota);
       },
       mostraPersonagem(personagem) {
-        console.log(personagem);
         personagemSelecionado = personagem;
       },
     },
